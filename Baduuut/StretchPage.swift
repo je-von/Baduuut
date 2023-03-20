@@ -9,6 +9,9 @@ import SwiftUI
 
 struct StretchPage: View {
     @State private var isTimerVisible: Bool = false
+    @State private var timeRemaining = 20
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     var body: some View {
         
         ZStack {
@@ -26,16 +29,16 @@ struct StretchPage: View {
                 
                 ZStack {
                     if isTimerVisible{
-                        Text("20")
-                            .font(.system(size: 280, weight: .thin))
+                        Text("\(timeRemaining)")
+                            .font(.system(size: 310, weight: .thin))
                             .foregroundColor(.white)
                             .offset(y: -30)
-                        // Dummy clown
-                        Image("dummy")
-                            .scaleEffect(1.5)
-                            .offset(y: 100)
                             
                     }
+                    // Dummy clown
+                    Image("dummy")
+                        .scaleEffect(1.5)
+                        .offset(y: 100)
                 }
                 
                 Spacer()
@@ -44,7 +47,7 @@ struct StretchPage: View {
                 if !isTimerVisible {
                     Button("Chop chop!"){
                         withAnimation(.easeIn){
-                            isTimerVisible.toggle()
+                            isTimerVisible = true
                         }
                     }
                     .foregroundColor(Color(red: 16/255, green: 38/255, blue: 67/255))
@@ -59,6 +62,19 @@ struct StretchPage: View {
             .padding()
         }
         .background(Color(red: 16/255, green: 38/255, blue: 67/255))
+        .onReceive(timer){ time in
+            guard isTimerVisible else {
+                return
+            }
+            if timeRemaining > 0 {
+                timeRemaining -= 1
+            } else {
+                isTimerVisible = false
+                // fix: tergantung strecth?
+                timeRemaining = 20
+            }
+            
+        }
     }
 }
 
