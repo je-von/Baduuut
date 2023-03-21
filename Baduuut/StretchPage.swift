@@ -19,14 +19,14 @@ struct StretchPage: View {
                 .foregroundColor(Color(red: 224/255, green: 152/255, blue: 56/255))
                 .frame(width: 685, height: 685)
                 .offset(y: -200) // Masih nembak, kalo di Sketch -137
-            VStack {
+            VStack (spacing: 0) {
                 Text("Let's stretch!")
                     .bold()
                     .font(.largeTitle)
                     .foregroundColor(.white)
                 Text("- or not. We don't really care.")
                     .foregroundColor(.white)
-                
+                    .padding(.top, 5)
                 ZStack {
                     if isTimerVisible{
                         Text("\(timeRemaining)")
