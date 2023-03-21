@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
-
+import Lottie
 struct OnboardPage: View {
-    @State private var selectedTime = "Mild"
+    @State private var selectedTime = "Every 30 minutes"
     let times = ["Every 15 seconds", "Every 30 minutes", "Every 1 hour", "Every 2 hours"]
     let message: String = welcomeMessages.randomElement()!
+    
     var body: some View {
         
         ZStack {
@@ -33,17 +34,17 @@ struct OnboardPage: View {
                         .padding(.top, 5)
                     Spacer()
                 }.frame(height: 140)
-                //                Dummy image
-                Image("dummy")
-                    .scaleEffect(1.2)
-                
-                
-                
+ 
                 Spacer()
+                
+                LottieView(lottieFile: "dummy-2")
+                    .offset(y: 15)
+                    .scaleEffect(1.6)
                 
                 
                 VStack(spacing: .none){
-                    Text("How often should I bug you and disrupt your work?")
+                    Spacer()
+                    Text("How often should I bug you?")
                         .multilineTextAlignment(.center)
                         .font(.title2)
                         .bold()
@@ -53,14 +54,17 @@ struct OnboardPage: View {
                     Picker("Time", selection: $selectedTime) {
                         ForEach(times, id: \.self) {
                             Text($0)
-//                                .fontWeight(.medium)
-//                                .foregroundColor(Color(red: 224/255, green: 152/255, blue: 56/255))
+                                .fontWeight(.medium)
+                                .foregroundColor(Color(red: 224/255, green: 152/255, blue: 56/255))
                                 
                         }
                     }
                     .pickerStyle(.wheel)
+                    .frame(height: 120)
                     .scaleEffect(1.1)
-                    .padding(.bottom, 15)
+                    .padding(.bottom, -5)
+                    .padding(.top, -17)
+                    
                     //                    .padding()
                     //                    .frame(width: UIScreen.main.bounds.width - 32)
                     //                    .background(.white)
