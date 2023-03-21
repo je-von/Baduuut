@@ -9,7 +9,7 @@ import SwiftUI
 import Lottie
 struct OnboardPage: View {
     @State private var isSheetVisible = false
-    @State private var hasStarted = false
+//    @State private var hasStarted = false
     @State private var selectedTime = "Every 30 minutes"
     let times = ["Every 15 seconds", "Every 30 minutes", "Every 1 hour", "Every 2 hours"]
     let message: String = welcomeMessages.randomElement()!
@@ -35,7 +35,7 @@ struct OnboardPage: View {
             .fontWeight(.semibold)
             .padding()
             .frame(width: UIScreen.main.bounds.width - 32)
-            .foregroundColor(Color(red: 16/255, green: 38/255, blue: 67/255))
+            .foregroundColor(Color("Primary"))
             .background(.white)
             .cornerRadius(8)
             .sheet(isPresented: $isSheetVisible) {
@@ -45,13 +45,13 @@ struct OnboardPage: View {
                         .font(.title2)
                         .bold()
                         .fixedSize(horizontal: false, vertical: true)
-                        .foregroundColor(Color(red: 16/255, green: 38/255, blue: 67/255))
+                        .foregroundColor(Color("Primary"))
                     
                     Picker("Time", selection: $selectedTime) {
                         ForEach(times, id: \.self) {
                             Text($0)
                                 .fontWeight(.medium)
-                                .foregroundColor(Color(red: 224/255, green: 152/255, blue: 56/255))
+                                .foregroundColor(Color("Secondary"))
                             
                         }
                     }
@@ -63,13 +63,13 @@ struct OnboardPage: View {
                     
                     Button("Start!"){
                         isSheetVisible = false
-                        hasStarted = true
+//                        hasStarted = true
                     }
                     .foregroundColor(.white)
                     .fontWeight(.semibold)
                     .padding()
                     .frame(width: UIScreen.main.bounds.width - 32)
-                    .background(Color(red: 16/255, green: 38/255, blue: 67/255))
+                    .background(Color("Primary"))
                     .cornerRadius(8)
                     
                 }
@@ -83,7 +83,7 @@ struct OnboardPage: View {
             .fontWeight(.semibold)
             .padding()
             .frame(width: UIScreen.main.bounds.width - 32)
-            .foregroundColor(Color(red: 16/255, green: 38/255, blue: 67/255))
+            .foregroundColor(Color("Primary"))
             .background(.white)
             .cornerRadius(8)
         }

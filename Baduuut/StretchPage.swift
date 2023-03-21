@@ -18,7 +18,7 @@ struct StretchPage: View {
     var body: some View {
         MasterView(
             title: isFirstTime ? "Let's stretch!" : movement.name,
-            subtitle: isFirstTime ? "- or not. We don't really care." : "",
+            subtitle: isFirstTime ? "- or not. I don't really care." : "",
             isTimerVisible: $isTimerVisible,
             timeRemaining: $timeRemaining
         ){
@@ -30,7 +30,7 @@ struct StretchPage: View {
             .padding()
             .frame(width: UIScreen.main.bounds.width - 32)
             .font(.system(size: 18))
-            .background(Color(red: 224/255, green: 56/255, blue: 56/255))
+            .background(Color("Danger"))
             .foregroundColor(.white)
             .cornerRadius(8)
             

@@ -30,7 +30,7 @@ struct MasterView<Content: View>: View {
         NavigationView {
             ZStack {
                 Circle()
-                    .foregroundColor(Color(red: 224/255, green: 152/255, blue: 56/255))
+                    .foregroundColor(Color("Secondary"))
                     .frame(width: 685, height: 685)
                     .offset(y: -240) // Masih nembak, kalo di Sketch -137
                 VStack (spacing: 0) {
@@ -80,7 +80,7 @@ struct MasterView<Content: View>: View {
                 }
                 .padding()
             }
-            .background(Color(red: 16/255, green: 38/255, blue: 67/255))
+            .background(Color("Primary"))
         }
         .navigationBarBackButtonHidden(true)
     }

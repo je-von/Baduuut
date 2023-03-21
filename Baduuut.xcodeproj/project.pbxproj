@@ -98,7 +98,6 @@
 		532FD3B129C82E1F001DF5E8 = {
 			isa = PBXGroup;
 			children = (
-				0A7FD77E29C9A91D00FA859D /* MasterView.swift */,
 				532FD3BC29C82E1F001DF5E8 /* Baduuut */,
 				532FD3CD29C82E20001DF5E8 /* BaduuutTests */,
 				532FD3D729C82E20001DF5E8 /* BaduuutUITests */,
@@ -119,6 +118,7 @@
 		532FD3BC29C82E1F001DF5E8 /* Baduuut */ = {
 			isa = PBXGroup;
 			children = (
+				0A7FD77E29C9A91D00FA859D /* MasterView.swift */,
 				0A7FD77529C972FD00FA859D /* Lottie */,
 				532FD3BD29C82E1F001DF5E8 /* BaduuutApp.swift */,
 				532FD3BF29C82E1F001DF5E8 /* ContentView.swift */,
