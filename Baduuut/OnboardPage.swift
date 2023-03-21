@@ -8,9 +8,15 @@
 import SwiftUI
 import Lottie
 struct OnboardPage: View {
+    @State private var hasStarted = false
     @State private var selectedTime = "Every 30 minutes"
     let times = ["Every 15 seconds", "Every 30 minutes", "Every 1 hour", "Every 2 hours"]
     let message: String = welcomeMessages.randomElement()!
+    
+    @State private var isModalVisible = false
+
+        let heights = stride(from: 0.1, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
+
     
     var body: some View {
         
@@ -44,42 +50,58 @@ struct OnboardPage: View {
                 
                 VStack(spacing: .none){
                     Spacer()
-                    Text("How often should I bug you?")
-                        .multilineTextAlignment(.center)
-                        .font(.title2)
-                        .bold()
-                        .fixedSize(horizontal: false, vertical: true)
-                        .foregroundColor(.white)
-                    
-                    Picker("Time", selection: $selectedTime) {
-                        ForEach(times, id: \.self) {
-                            Text($0)
-                                .fontWeight(.medium)
-                                .foregroundColor(Color(red: 224/255, green: 152/255, blue: 56/255))
-                                
-                        }
-                    }
-                    .pickerStyle(.wheel)
-                    .frame(height: 120)
-                    .scaleEffect(1.1)
-                    .padding(.bottom, -5)
-                    .padding(.top, -17)
-                    
-                    //                    .padding()
-                    //                    .frame(width: UIScreen.main.bounds.width - 32)
-                    //                    .background(.white)
-                    //                    .padding()
-                    //                    .pickerStyle(.wheel)
-                    
-                    Button("Start!"){
+                    if !hasStarted{
+                        Text("How often should I bug you?")
+                            .multilineTextAlignment(.center)
+                            .font(.title2)
+                            .bold()
+                            .fixedSize(horizontal: false, vertical: true)
+                            .foregroundColor(.white)
                         
+                        Picker("Time", selection: $selectedTime) {
+                            ForEach(times, id: \.self) {
+                                Text($0)
+                                    .fontWeight(.medium)
+                                    .foregroundColor(Color(red: 224/255, green: 152/255, blue: 56/255))
+                                    
+                            }
+                        }
+                        .pickerStyle(.wheel)
+                        .frame(height: 120)
+                        .scaleEffect(1.1)
+                        .padding(.bottom, -5)
+                        .padding(.top, -17)
+                        
+                        //                    .padding()
+                        //                    .frame(width: UIScreen.main.bounds.width - 32)
+                        //                    .background(.white)
+                        //                    .padding()
+                        //                    .pickerStyle(.wheel)
+                        
+                        Button("Start!"){
+                            withAnimation{
+                                hasStarted = true
+                            }
+                        }
+                        .foregroundColor(Color(red: 16/255, green: 38/255, blue: 67/255))
+                        .fontWeight(.semibold)
+                        .padding()
+                        .frame(width: UIScreen.main.bounds.width - 32)
+                        .background(.white)
+                        .cornerRadius(8)
+                    } else {
+                        Button("Stop!"){
+                            withAnimation{
+                                hasStarted = false
+                            }
+                        }
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding()
+                        .frame(width: UIScreen.main.bounds.width - 32)
+                        .background(Color(red: 224/255, green: 56/255, blue: 56/255))
+                        .cornerRadius(8)
                     }
-                    .foregroundColor(Color(red: 16/255, green: 38/255, blue: 67/255))
-                    .fontWeight(.semibold)
-                    .padding()
-                    .frame(width: UIScreen.main.bounds.width - 32)
-                    .background(.white)
-                    .cornerRadius(8)
                     
                 }
                 .frame(width: UIScreen.main.bounds.width - 32)
