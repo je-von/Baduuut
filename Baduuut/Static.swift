@@ -30,3 +30,14 @@ let reminderMessages: [String] = [
     ,"Stretch or snap. You decide."
     ,"Don't be stiff. Open our app."
 ]
+
+
+struct Movement{
+    var name: String
+    var duration: Int
+    var lottieFileName: String
+}
+
+let movements: [Movement] = [
+    Movement(name: "Movement Dummy", duration: 25, lottieFileName: "dummy-2")
+]
