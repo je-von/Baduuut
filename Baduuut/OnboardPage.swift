@@ -13,10 +13,14 @@ struct OnboardPage: View {
     @State private var selectedTime = "Every 30 minutes"
     let times = ["Every 15 seconds", "Every 30 minutes", "Every 1 hour", "Every 2 hours"]
     let message: String = welcomeMessages.randomElement()!
+    
     //timer
     @StateObject private var vm = ViewModel()
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     let time:Float = 1.0
+    
+    //set session / stop timer button
+    @State private var buttonName = "Set Session"
     
     var body: some View {
         MasterView(title: "Oh, hi 😒", subtitle: message){
@@ -41,8 +45,14 @@ struct OnboardPage: View {
                     .padding(.bottom, 20)
                 
                 //fix: tulisannya, warna button?
-                Button("Set Session"){
-                    isSheetVisible = true
+                Button(buttonName){
+                    if vm.isActive {
+                        vm.reset()
+                        buttonName = "Set Session"
+                    } else {
+                        isSheetVisible = true
+                    }
+                    
                 }
                 .font(.system(size: 18))
                 .fontWeight(.semibold)
@@ -78,6 +88,7 @@ struct OnboardPage: View {
                             isSheetVisible = false
                             vm.start(seconds: vm.extractTime(selected: $selectedTime.wrappedValue))
                             //                        hasStarted = true
+                            buttonName = "Stop Timer"
                         }
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
