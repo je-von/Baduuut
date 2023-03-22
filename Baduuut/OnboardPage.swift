@@ -21,6 +21,8 @@ struct OnboardPage: View {
     
     //set session / stop timer button
     @State private var buttonName = "Set Session"
+    @State private var buttonColor: Color = Color(.white)
+    @State private var buttonTextColor: Color = Color("Primary")
     
     var body: some View {
         MasterView(title: "Oh, hi 😒", subtitle: message){
@@ -49,6 +51,8 @@ struct OnboardPage: View {
                     if vm.isActive {
                         vm.reset()
                         buttonName = "Set Session"
+                        buttonColor = .white
+                        buttonTextColor = Color("Primary")
                     } else {
                         isSheetVisible = true
                     }
@@ -58,8 +62,8 @@ struct OnboardPage: View {
                 .fontWeight(.semibold)
                 .padding()
                 .frame(width: UIScreen.main.bounds.width - 32)
-                .foregroundColor(Color("Primary"))
-                .background(.white)
+                .foregroundColor(buttonTextColor)
+                .background(buttonColor)
                 .cornerRadius(8)
                 .sheet(isPresented: $isSheetVisible) {
                     VStack(spacing: .none){
@@ -88,7 +92,10 @@ struct OnboardPage: View {
                             isSheetVisible = false
                             vm.start(seconds: vm.extractTime(selected: $selectedTime.wrappedValue))
                             //                        hasStarted = true
+                            
                             buttonName = "Stop Timer"
+                            buttonColor = Color("Danger")
+                            buttonTextColor = Color(.white)
                         }
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
