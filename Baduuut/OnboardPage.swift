@@ -71,46 +71,49 @@ struct OnboardPage: View {
                 .background(.white)
                 .cornerRadius(8)
                 .sheet(isPresented: $isSheetVisible) {
-                    VStack(spacing: .none){
-                        Text("How often should I bug you?")
-                            .multilineTextAlignment(.center)
-                            .font(.title2)
-                            .bold()
-                            .fixedSize(horizontal: false, vertical: true)
-                            .foregroundColor(Color("Primary"))
-                        
-                        Picker("Time", selection: $selectedTime) {
-                            ForEach(times, id: \.self) {
-                                Text($0)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(Color("Secondary"))
-                                
+                    ZStack {
+                        Color.white.ignoresSafeArea(.all)
+                        VStack(spacing: .none){
+                            Text("How often should I bug you?")
+                                .multilineTextAlignment(.center)
+                                .font(.title2)
+                                .bold()
+                                .fixedSize(horizontal: false, vertical: true)
+                                .foregroundColor(Color("Primary"))
+                            
+                            Picker("Time", selection: $selectedTime) {
+                                ForEach(times, id: \.self) {
+                                    Text($0)
+                                        .fontWeight(.medium)
+                                        .foregroundColor(Color("Secondary"))
+                                    
+                                }
                             }
+                            .pickerStyle(.wheel)
+                            .frame(height: 120)
+                            .scaleEffect(1.1)
+                            .padding(.bottom, -5)
+                            .padding(.top, -17)
+                            
+                            Button("Start!"){
+                                isSheetVisible = false
+                                let seconds = vm.extractTime(selected: $selectedTime.wrappedValue)
+                                vm.start(seconds: seconds)
+                                
+                                
+                                
+                                UserDefaults.standard.set(seconds, forKey: "timer_interval")
+                            }
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding()
+                            .frame(width: UIScreen.main.bounds.width - 32)
+                            .background(Color("Primary"))
+                            .cornerRadius(8)
+                            
                         }
-                        .pickerStyle(.wheel)
-                        .frame(height: 120)
-                        .scaleEffect(1.1)
-                        .padding(.bottom, -5)
-                        .padding(.top, -17)
-                        
-                        Button("Start!"){
-                            isSheetVisible = false
-                            let seconds = vm.extractTime(selected: $selectedTime.wrappedValue)
-                            vm.start(seconds: seconds)
-                            
-                            
-                            
-                            UserDefaults.standard.set(seconds, forKey: "timer_interval")
-                        }
-                        .foregroundColor(.white)
-                        .fontWeight(.semibold)
-                        .padding()
-                        .frame(width: UIScreen.main.bounds.width - 32)
-                        .background(Color("Primary"))
-                        .cornerRadius(8)
-                        
+                        .presentationDetents([.height(260)])
                     }
-                    .presentationDetents([.height(260)])
                 }
                 
             }
