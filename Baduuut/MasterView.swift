@@ -27,7 +27,7 @@ struct MasterView<Content: View>: View {
     
     var body: some View {
         
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Circle()
                     .foregroundColor(Color("Secondary"))

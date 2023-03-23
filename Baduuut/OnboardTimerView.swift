@@ -15,6 +15,7 @@ extension OnboardPage{
         
         private var initialTime = 0
         private var endDate = Date()
+
         
         func start(seconds: Float) {
             self.initialTime = Int(seconds)
@@ -22,7 +23,7 @@ extension OnboardPage{
 //            let _ = print(endDate)
             self.isActive = true
             self.endDate = Calendar.current.date(byAdding: .second, value: Int(seconds), to: endDate)!
-            
+            UserDefaults.standard.set(self.endDate, forKey: "timer_end_date")
 //            let _ = print(endDate)
         }
         
@@ -30,18 +31,28 @@ extension OnboardPage{
             self.seconds = Float(initialTime)
             self.isActive = false
             self.time = "00:00:00"
+            self.endDate = Date()
         }
         
         func updateCountdown(){
-            guard isActive else { return }
-            
+//            guard isActive else { return }
+            self.endDate = UserDefaults.standard.object(forKey: "timer_end_date") as? Date ?? self.endDate
+
             let now = Date()
             let diff = endDate.timeIntervalSince1970 - now.timeIntervalSince1970
             
+//            UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { requests in
+//                for request in requests {
+//                    print((request.trigger as! UNTimeIntervalNotificationTrigger).nextTriggerDate() ?? "")
+//
+//                }
+//            })
             if diff <= 0 {
                 self.isActive = false
                 self.time = "00:00:00"
                 return
+            } else {
+                self.isActive = true
             }
             
             let date = Date(timeIntervalSince1970: diff)

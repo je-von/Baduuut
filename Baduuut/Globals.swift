@@ -7,6 +7,8 @@
 
 import Foundation
 
+let globalTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+
 let welcomeMessages: [String] = [
     "We'll be stretching your limits and reminding you that sitting on your butt all day won't make it any bigger.",
     "Welcome to our app, where we'll nag you more than your ex ever did."

@@ -13,7 +13,8 @@ struct StretchPage: View {
     @State private var isFirstTime: Bool = true
     @State private var isTimerVisible: Bool = true
     @State private var timeRemaining = 3
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State var moveToOnboard = false
+    
     
     var body: some View {
         MasterView(
@@ -34,7 +35,11 @@ struct StretchPage: View {
             .foregroundColor(.white)
             .cornerRadius(8)
             
-        }.onReceive(timer){ time in
+        }
+        .navigationDestination(isPresented: $moveToOnboard) {
+            OnboardPage()
+        }
+        .onReceive(globalTimer){ time in
             guard isTimerVisible else {
                 return
             }
@@ -44,6 +49,9 @@ struct StretchPage: View {
                 if isFirstTime {
                     timeRemaining = movement.duration
                     isFirstTime = false
+                } else {
+                    moveToOnboard = true
+                    //                    timer.upstream.connect().cancel()
                 }
             }
             

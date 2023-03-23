@@ -17,13 +17,9 @@ struct OnboardPage: View {
     
     //timer
     @StateObject private var vm = ViewModel()
-    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+//    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     let time:Float = 1.0
     
-    //set session / stop timer button
-    @State private var buttonName = "Set Session"
-    @State private var buttonColor: Color = Color(.white)
-    @State private var buttonTextColor: Color = Color("Primary")
     
     var body: some View {
         MasterView(title: "Oh, hi 😒", subtitle: message){
@@ -38,9 +34,12 @@ struct OnboardPage: View {
                     .fontWeight(.bold)
                     .font(.system(size: 40))
                     .foregroundColor(.white)
-            }.onReceive(timer) {_ in
+            }.onReceive(globalTimer) {_ in
+                print("asdf")
                 vm.updateCountdown()
             }
+            
+            
             
             Text("until your next stretch")
                 .font(.system(size: 18))
@@ -48,86 +47,87 @@ struct OnboardPage: View {
                 .padding(.bottom, 20)
             
             //fix: tulisannya, warna button?
-            Button(buttonName){
-                if vm.isActive {
+            if vm.isActive{
+                Button("Stop Timer"){
                     vm.reset()
-                    buttonName = "Set Session"
-                    buttonColor = .white
-                    buttonTextColor = Color("Primary")
-                    
+                    UserDefaults.standard.set(nil, forKey: "timer_end_date")
                     UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-                } else {
+                }
+                .font(.system(size: 18))
+                .fontWeight(.semibold)
+                .padding()
+                .frame(width: UIScreen.main.bounds.width - 32)
+                .foregroundColor(.white)
+                .background(Color("Danger"))
+                .cornerRadius(8)
+            } else {
+                Button("Set Session"){
                     isSheetVisible = true
                 }
-                
-            }
-            .font(.system(size: 18))
-            .fontWeight(.semibold)
-            .padding()
-            .frame(width: UIScreen.main.bounds.width - 32)
-            .foregroundColor(buttonTextColor)
-            .background(buttonColor)
-            .cornerRadius(8)
-            .sheet(isPresented: $isSheetVisible) {
-                VStack(spacing: .none){
-                    Text("How often should I bug you?")
-                        .multilineTextAlignment(.center)
-                        .font(.title2)
-                        .bold()
-                        .fixedSize(horizontal: false, vertical: true)
-                        .foregroundColor(Color("Primary"))
-                    
-                    Picker("Time", selection: $selectedTime) {
-                        ForEach(times, id: \.self) {
-                            Text($0)
-                                .fontWeight(.medium)
-                                .foregroundColor(Color("Secondary"))
+                .font(.system(size: 18))
+                .fontWeight(.semibold)
+                .padding()
+                .frame(width: UIScreen.main.bounds.width - 32)
+                .foregroundColor(Color("Primary"))
+                .background(.white)
+                .cornerRadius(8)
+                .sheet(isPresented: $isSheetVisible) {
+                    VStack(spacing: .none){
+                        Text("How often should I bug you?")
+                            .multilineTextAlignment(.center)
+                            .font(.title2)
+                            .bold()
+                            .fixedSize(horizontal: false, vertical: true)
+                            .foregroundColor(Color("Primary"))
+                        
+                        Picker("Time", selection: $selectedTime) {
+                            ForEach(times, id: \.self) {
+                                Text($0)
+                                    .fontWeight(.medium)
+                                    .foregroundColor(Color("Secondary"))
+                                
+                            }
+                        }
+                        .pickerStyle(.wheel)
+                        .frame(height: 120)
+                        .scaleEffect(1.1)
+                        .padding(.bottom, -5)
+                        .padding(.top, -17)
+                        
+                        Button("Start!"){
+                            isSheetVisible = false
+                            let seconds = vm.extractTime(selected: $selectedTime.wrappedValue)
+                            vm.start(seconds: seconds)
+                            
+                            let content = UNMutableNotificationContent()
+                            content.title = "Time's up!"
+                            content.subtitle = reminderMessages.randomElement()!
+                            content.sound = UNNotificationSound.default
+                            
+                            // show this notification five seconds from now
+                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: true)
+                            
+                            // choose a random identifier
+                            let request = UNNotificationRequest(identifier: "BADUUUT_STRETCH_NOTIF_ID", content: content, trigger: trigger)
+                            
+                            // add our notification request
+                            UNUserNotificationCenter.current().add(request)
+                            
+                            
+                            print("masuk")
                             
                         }
-                    }
-                    .pickerStyle(.wheel)
-                    .frame(height: 120)
-                    .scaleEffect(1.1)
-                    .padding(.bottom, -5)
-                    .padding(.top, -17)
-                    
-                    Button("Start!"){
-                        isSheetVisible = false
-                        let seconds = vm.extractTime(selected: $selectedTime.wrappedValue)
-                        vm.start(seconds: seconds)
-                        //                        hasStarted = true
-                        
-                        buttonName = "Stop Timer"
-                        buttonColor = Color("Danger")
-                        buttonTextColor = Color(.white)
-                        
-                        let content = UNMutableNotificationContent()
-                        content.title = "Time's up!"
-                        content.subtitle = reminderMessages.randomElement()!
-                        content.sound = UNNotificationSound.default
-                        
-                        // show this notification five seconds from now
-                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: true)
-                        
-                        // choose a random identifier
-                        let request = UNNotificationRequest(identifier: "BADUUUT_STRETCH_NOTIF_ID", content: content, trigger: trigger)
-                        
-                        // add our notification request
-                        UNUserNotificationCenter.current().add(request)
-                        
-                        
-                        print("masuk")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding()
+                        .frame(width: UIScreen.main.bounds.width - 32)
+                        .background(Color("Primary"))
+                        .cornerRadius(8)
                         
                     }
-                    .foregroundColor(.white)
-                    .fontWeight(.semibold)
-                    .padding()
-                    .frame(width: UIScreen.main.bounds.width - 32)
-                    .background(Color("Primary"))
-                    .cornerRadius(8)
-                    
+                    .presentationDetents([.height(260)])
                 }
-                .presentationDetents([.height(260)])
+                
             }
             
             NavigationLink("Stretch Now"){
