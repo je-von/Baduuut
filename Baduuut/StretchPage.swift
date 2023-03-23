@@ -12,7 +12,7 @@ struct StretchPage: View {
     
     @State private var isFirstTime: Bool = true
     @State private var isTimerVisible: Bool = true
-    @State private var timeRemaining = 3
+    @State private var timeRemaining = 4
     @State var moveToOnboard = false
     
     

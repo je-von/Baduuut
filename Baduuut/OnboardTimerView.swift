@@ -9,6 +9,7 @@ import SwiftUI
 
 extension OnboardPage{
     final class ViewModel: ObservableObject{
+        @Published var hasFinished = false
         @Published var isActive = false
         @Published var time: String = "00:00:00"
         @Published var seconds: Float = 15
@@ -18,6 +19,7 @@ extension OnboardPage{
 
         
         func start(seconds: Float) {
+            self.hasFinished = false
             self.initialTime = Int(seconds)
             self.endDate = Date()
 //            let _ = print(endDate)
@@ -48,11 +50,18 @@ extension OnboardPage{
 //                }
 //            })
             if diff <= 0 {
+                if UserDefaults.standard.object(forKey: "timer_end_date") != nil{
+                    hasFinished = true
+                    UserDefaults.standard.set(nil, forKey: "timer_end_date")
+                } else {
+                    hasFinished = false
+                }
                 self.isActive = false
                 self.time = "00:00:00"
                 return
             } else {
                 self.isActive = true
+                self.hasFinished = false
             }
             
             let date = Date(timeIntervalSince1970: diff)

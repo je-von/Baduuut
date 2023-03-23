@@ -10,9 +10,9 @@ import Lottie
 import UserNotifications
 struct OnboardPage: View {
     @State private var isSheetVisible = false
-    //    @State private var hasStarted = false
+    @State var moveToStretch = false
     @State private var selectedTime = "Every 30 minutes"
-    let times = ["Every 60 seconds", "Every 30 minutes", "Every 1 hour", "Every 2 hours"]
+    let times = ["Every 5 seconds", "Every 30 minutes", "Every 1 hour", "Every 2 hours"]
     let message: String = welcomeMessages.randomElement()!
     
     //timer
@@ -23,24 +23,21 @@ struct OnboardPage: View {
     
     var body: some View {
         MasterView(title: "Oh, hi 😒", subtitle: message){
-            //
-            //            Text("00:00:00")
-            //                .fontWeight(.bold)
-            //                .font(.system(size: 40))
-            //                .foregroundColor(.white)
-            
             VStack{
                 Text("\(vm.time)")
                     .fontWeight(.bold)
                     .font(.system(size: 40))
                     .foregroundColor(.white)
+            }.navigationDestination(isPresented: $moveToStretch){
+                StretchPage()
             }.onReceive(globalTimer) {_ in
-                print("asdf")
                 vm.updateCountdown()
+                if vm.hasFinished{
+                    moveToStretch = true
+                    print("msk")
+                }
             }
-            
-            
-            
+ 
             Text("until your next stretch")
                 .font(.system(size: 18))
                 .foregroundColor(.white)
@@ -104,17 +101,12 @@ struct OnboardPage: View {
                             content.subtitle = reminderMessages.randomElement()!
                             content.sound = UNNotificationSound.default
                             
-                            // show this notification five seconds from now
-                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: true)
+                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)
                             
-                            // choose a random identifier
                             let request = UNNotificationRequest(identifier: "BADUUUT_STRETCH_NOTIF_ID", content: content, trigger: trigger)
                             
-                            // add our notification request
                             UNUserNotificationCenter.current().add(request)
                             
-                            
-                            print("masuk")
                             
                         }
                         .foregroundColor(.white)
@@ -141,6 +133,7 @@ struct OnboardPage: View {
             .background(.white)
             .cornerRadius(8)
         }
+        
     }
 }
 
