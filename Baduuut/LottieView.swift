@@ -15,6 +15,7 @@ struct LottieView: UIViewRepresentable {
     let animationView = LottieAnimationView()
  
     func makeUIView(context: Context) -> some UIView {
+        
         let view = UIView(frame: .zero)
  
         animationView.animation = LottieAnimation.named(lottieFile)
@@ -27,7 +28,7 @@ struct LottieView: UIViewRepresentable {
         animationView.translatesAutoresizingMaskIntoConstraints = false
         animationView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         animationView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
- 
+
         return view
     }
  

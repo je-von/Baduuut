@@ -27,6 +27,17 @@ extension OnboardPage{
             self.endDate = Calendar.current.date(byAdding: .second, value: Int(seconds), to: endDate)!
             UserDefaults.standard.set(self.endDate, forKey: "timer_end_date")
 //            let _ = print(endDate)
+            
+            let content = UNMutableNotificationContent()
+            content.title = "Time's up!"
+            content.subtitle = reminderMessages.randomElement()!
+            content.sound = UNNotificationSound.default
+            
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)
+            
+            let request = UNNotificationRequest(identifier: "BADUUUT_STRETCH_NOTIF_ID", content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request)
         }
         
         func reset() {

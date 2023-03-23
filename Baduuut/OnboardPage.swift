@@ -9,8 +9,9 @@ import SwiftUI
 import Lottie
 import UserNotifications
 struct OnboardPage: View {
+    @Binding var currentPage: Page
     @State private var isSheetVisible = false
-    @State var moveToStretch = false
+//    @State var moveToStretch = false
     @State private var selectedTime = "Every 30 minutes"
     let times = ["Every 5 seconds", "Every 30 minutes", "Every 1 hour", "Every 2 hours"]
     let message: String = welcomeMessages.randomElement()!
@@ -19,8 +20,7 @@ struct OnboardPage: View {
     @StateObject private var vm = ViewModel()
 //    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     let time:Float = 1.0
-    
-    
+
     var body: some View {
         MasterView(title: "Oh, hi 😒", subtitle: message){
             VStack{
@@ -28,12 +28,13 @@ struct OnboardPage: View {
                     .fontWeight(.bold)
                     .font(.system(size: 40))
                     .foregroundColor(.white)
-            }.navigationDestination(isPresented: $moveToStretch){
-                StretchPage()
+//            }.navigationDestination(isPresented: $moveToStretch){
+//                StretchPage()
             }.onReceive(globalTimer) {_ in
                 vm.updateCountdown()
                 if vm.hasFinished{
-                    moveToStretch = true
+//                    moveToStretch = true
+                    currentPage = .stretch
                     print("msk")
                 }
             }
@@ -48,6 +49,7 @@ struct OnboardPage: View {
                 Button("Stop Timer"){
                     vm.reset()
                     UserDefaults.standard.set(nil, forKey: "timer_end_date")
+                    UserDefaults.standard.set(nil, forKey: "timer_interval")
                     UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
                 }
                 .font(.system(size: 18))
@@ -96,18 +98,9 @@ struct OnboardPage: View {
                             let seconds = vm.extractTime(selected: $selectedTime.wrappedValue)
                             vm.start(seconds: seconds)
                             
-                            let content = UNMutableNotificationContent()
-                            content.title = "Time's up!"
-                            content.subtitle = reminderMessages.randomElement()!
-                            content.sound = UNNotificationSound.default
-                            
-                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)
-                            
-                            let request = UNNotificationRequest(identifier: "BADUUUT_STRETCH_NOTIF_ID", content: content, trigger: trigger)
-                            
-                            UNUserNotificationCenter.current().add(request)
                             
                             
+                            UserDefaults.standard.set(seconds, forKey: "timer_interval")
                         }
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
@@ -121,9 +114,11 @@ struct OnboardPage: View {
                 }
                 
             }
-            
-            NavigationLink("Stretch Now"){
-                StretchPage()
+
+            Button("Stretch Now"){
+//                StretchPage()
+//                moveToStretch = true
+                currentPage = .stretch
             }
             .font(.system(size: 18))
             .fontWeight(.semibold)
@@ -133,6 +128,13 @@ struct OnboardPage: View {
             .background(.white)
             .cornerRadius(8)
         }
+        .onAppear{
+            if UserDefaults.standard.object(forKey: "timer_interval") != nil && UserDefaults.standard.object(forKey: "timer_end_date") == nil{
+                let seconds: Float = UserDefaults.standard.object(forKey: "timer_interval") as! Float
+                vm.start(seconds: seconds)
+                
+            }
+        }
         
     }
 }
@@ -140,6 +142,6 @@ struct OnboardPage: View {
 
 struct OnboardPage_Previews: PreviewProvider {
     static var previews: some View {
-        OnboardPage()
+        OnboardPage(currentPage: .constant(.onboard))
     }
 }

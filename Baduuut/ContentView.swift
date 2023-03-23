@@ -7,33 +7,28 @@
 
 import SwiftUI
 import UserNotifications
+enum Page {
+    case onboard, stretch
+}
 
 struct ContentView: View {
     @ObservedObject var appState = AppState.shared
-//    var pushNavigationBinding : Binding<Bool> {
-//        .init { () -> Bool in
-//            appState.isOpenedFromNotification != nil
-//        } set: { (newValue) in
-//            if !newValue { appState.isOpenedFromNotification = nil }
-//        }
-//    }
+    @State private var currentPage: Page = .onboard
     init(){
-//        UINavigationBar.setAnimationsEnabled(false)
-//        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-//            if success {
-//                print("All set!")
-//            } else if let error = error {
-//                print(error.localizedDescription)
-//            }
-//        }
-        
+        UINavigationBar.setAnimationsEnabled(false)
+        if appState.isOpenedFromNotification == true {
+            currentPage = .stretch
+        }
     }
     var body: some View {
-        //        StretchPage()
-        if appState.isOpenedFromNotification == true {
-            StretchPage()
+        if currentPage == .onboard{
+            /**
+                            disini master view aja, jadi if onboard return master, else return master jg, baru dalem contentnya, kasih si onboard sama stretch
+             
+             */
+            OnboardPage(currentPage: $currentPage)
         } else {
-            OnboardPage()
+            StretchPage(currentPage: $currentPage)
         }
     }
 }
