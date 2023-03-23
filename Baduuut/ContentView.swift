@@ -22,10 +22,6 @@ struct ContentView: View {
     }
     var body: some View {
         if currentPage == .onboard{
-            /**
-                            disini master view aja, jadi if onboard return master, else return master jg, baru dalem contentnya, kasih si onboard sama stretch
-             
-             */
             OnboardPage(currentPage: $currentPage)
         } else {
             StretchPage(currentPage: $currentPage)

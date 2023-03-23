@@ -66,13 +66,11 @@ struct MasterView<Content: View>: View {
                                 .offset(y: -50)
                                 .padding(-50) // workaround supaya "container" si textnya gak overflow
                         }
-
+                        
                         if(hasAppear){
-//                            withAnimation(.spring()) {
-                                    LottieView(lottieFile: lottieFileName ?? "dummy-2")
-                                        .offset(y: 15)
-                                        .scaleEffect(1.7)
-//                            }
+                            LottieView(lottieFile: lottieFileName ?? "dummy-2")
+                                .offset(y: 15)
+                                .scaleEffect(1.7)
                         } else {
                             // todo: kasih placeholder pas lottie nya masih ngeload
                             Image("dummy")
@@ -80,7 +78,7 @@ struct MasterView<Content: View>: View {
                                 .scaleEffect(1.4)
                                 .padding(-50)
                         }
-
+                        
                     }
                     
                     

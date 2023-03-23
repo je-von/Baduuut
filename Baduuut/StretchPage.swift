@@ -13,9 +13,7 @@ struct StretchPage: View {
     @State private var isFirstTime: Bool = true
     @State private var isTimerVisible: Bool = true
     @State private var timeRemaining = 3
-//    @State var moveToOnboard = false
-    
-    
+
     var body: some View {
         MasterView(
             title: isFirstTime ? "Let's stretch!" : movement.name,
@@ -24,7 +22,6 @@ struct StretchPage: View {
             timeRemaining: $timeRemaining
         ){
             Button("Skip"){
-//                moveToOnboard = true
                 currentPage = .onboard
             }
             .fontWeight(.semibold)
@@ -47,9 +44,7 @@ struct StretchPage: View {
                     timeRemaining = movement.duration
                     isFirstTime = false
                 } else {
-//                    moveToOnboard = true
                     currentPage = .onboard
-                    //                    timer.upstream.connect().cancel()
                 }
             }
             

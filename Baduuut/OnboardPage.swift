@@ -11,14 +11,14 @@ import UserNotifications
 struct OnboardPage: View {
     @Binding var currentPage: Page
     @State private var isSheetVisible = false
-//    @State var moveToStretch = false
+
     @State private var selectedTime = "Every 30 minutes"
     let times = ["Every 5 seconds", "Every 30 minutes", "Every 1 hour", "Every 2 hours"]
     let message: String = welcomeMessages.randomElement()!
     
     //timer
     @StateObject private var vm = ViewModel()
-//    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+
     let time:Float = 1.0
 
     var body: some View {
@@ -28,12 +28,9 @@ struct OnboardPage: View {
                     .fontWeight(.bold)
                     .font(.system(size: 40))
                     .foregroundColor(.white)
-//            }.navigationDestination(isPresented: $moveToStretch){
-//                StretchPage()
             }.onReceive(globalTimer) {_ in
                 vm.updateCountdown()
                 if vm.hasFinished{
-//                    moveToStretch = true
                     currentPage = .stretch
                     print("msk")
                 }
@@ -119,8 +116,6 @@ struct OnboardPage: View {
             }
 
             Button("Stretch Now"){
-//                StretchPage()
-//                moveToStretch = true
                 currentPage = .stretch
             }
             .font(.system(size: 18))

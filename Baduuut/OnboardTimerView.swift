@@ -22,11 +22,9 @@ extension OnboardPage{
             self.hasFinished = false
             self.initialTime = Int(seconds)
             self.endDate = Date()
-//            let _ = print(endDate)
             self.isActive = true
             self.endDate = Calendar.current.date(byAdding: .second, value: Int(seconds), to: endDate)!
             UserDefaults.standard.set(self.endDate, forKey: "timer_end_date")
-//            let _ = print(endDate)
             
             let content = UNMutableNotificationContent()
             content.title = "Time's up!"
@@ -53,13 +51,7 @@ extension OnboardPage{
 
             let now = Date()
             let diff = endDate.timeIntervalSince1970 - now.timeIntervalSince1970
-            
-//            UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { requests in
-//                for request in requests {
-//                    print((request.trigger as! UNTimeIntervalNotificationTrigger).nextTriggerDate() ?? "")
-//
-//                }
-//            })
+
             if diff <= 0 {
                 if UserDefaults.standard.object(forKey: "timer_end_date") != nil{
                     hasFinished = true
@@ -83,13 +75,6 @@ extension OnboardPage{
             
             self.seconds = Float(seconds)
             self.time = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-            
-//            Debugging
-//            let _ = print(hours)
-//            let _ = print(date)
-//            let _ = print(calendar)
-//            let _ = print(now)
-//            let _ = print(diff)
         }
         
         //Calculate time value from string input (from picker)
@@ -113,10 +98,7 @@ extension OnboardPage{
             default:
                 timeInSeconds = Float(time)!
             }
-            
-            
-            
-            
+
             return timeInSeconds
         }
     }
