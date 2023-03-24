@@ -6,15 +6,14 @@
 //
 
 import SwiftUI
-
 struct StretchPage: View {
+    @Binding var currentPage: Page
     var movement: Movement = movements.randomElement()!
     
     @State private var isFirstTime: Bool = true
     @State private var isTimerVisible: Bool = true
     @State private var timeRemaining = 3
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
+
     var body: some View {
         MasterView(
             title: isFirstTime ? "Let's stretch!" : movement.name,
@@ -22,9 +21,8 @@ struct StretchPage: View {
             isTimerVisible: $isTimerVisible,
             timeRemaining: $timeRemaining
         ){
-            
-            NavigationLink("Skip"){
-                OnboardPage()
+            Button("Skip"){
+                currentPage = .onboard
             }
             .fontWeight(.semibold)
             .padding()
@@ -34,7 +32,8 @@ struct StretchPage: View {
             .foregroundColor(.white)
             .cornerRadius(8)
             
-        }.onReceive(timer){ time in
+        }
+        .onReceive(globalTimer){ time in
             guard isTimerVisible else {
                 return
             }
@@ -44,15 +43,20 @@ struct StretchPage: View {
                 if isFirstTime {
                     timeRemaining = movement.duration
                     isFirstTime = false
+                } else {
+                    currentPage = .onboard
                 }
             }
             
+        }
+        .onAppear{
+            print("kebuka")
         }
     }
 }
 
 struct StretchPage_Previews: PreviewProvider {
     static var previews: some View {
-        StretchPage()
+        StretchPage(currentPage: .constant(.stretch))
     }
 }

@@ -9,39 +9,62 @@ import SwiftUI
 
 extension OnboardPage{
     final class ViewModel: ObservableObject{
+        @Published var hasFinished = false
         @Published var isActive = false
         @Published var time: String = "00:00:00"
         @Published var seconds: Float = 15
         
         private var initialTime = 0
         private var endDate = Date()
+
         
         func start(seconds: Float) {
+            self.hasFinished = false
             self.initialTime = Int(seconds)
             self.endDate = Date()
-//            let _ = print(endDate)
             self.isActive = true
             self.endDate = Calendar.current.date(byAdding: .second, value: Int(seconds), to: endDate)!
+            UserDefaults.standard.set(self.endDate, forKey: "timer_end_date")
             
-//            let _ = print(endDate)
+            let content = UNMutableNotificationContent()
+            content.title = "Time's up!"
+            content.subtitle = reminderMessages.randomElement()!
+            content.sound = UNNotificationSound.default
+            
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(seconds), repeats: false)
+            
+            let request = UNNotificationRequest(identifier: "BADUUUT_STRETCH_NOTIF_ID", content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request)
         }
         
         func reset() {
             self.seconds = Float(initialTime)
             self.isActive = false
             self.time = "00:00:00"
+            self.endDate = Date()
         }
         
         func updateCountdown(){
-            guard isActive else { return }
-            
+//            guard isActive else { return }
+            self.endDate = UserDefaults.standard.object(forKey: "timer_end_date") as? Date ?? self.endDate
+
             let now = Date()
             let diff = endDate.timeIntervalSince1970 - now.timeIntervalSince1970
-            
+
             if diff <= 0 {
+                if UserDefaults.standard.object(forKey: "timer_end_date") != nil{
+                    hasFinished = true
+                    UserDefaults.standard.set(nil, forKey: "timer_end_date")
+                } else {
+                    hasFinished = false
+                }
                 self.isActive = false
                 self.time = "00:00:00"
                 return
+            } else {
+                self.isActive = true
+                self.hasFinished = false
             }
             
             let date = Date(timeIntervalSince1970: diff)
@@ -52,13 +75,6 @@ extension OnboardPage{
             
             self.seconds = Float(seconds)
             self.time = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-            
-//            Debugging
-//            let _ = print(hours)
-//            let _ = print(date)
-//            let _ = print(calendar)
-//            let _ = print(now)
-//            let _ = print(diff)
         }
         
         //Calculate time value from string input (from picker)
@@ -82,10 +98,7 @@ extension OnboardPage{
             default:
                 timeInSeconds = Float(time)!
             }
-            
-            
-            
-            
+
             return timeInSeconds
         }
     }
