@@ -13,7 +13,7 @@ struct OnboardPage: View {
     @State private var isSheetVisible = false
 
     @State private var selectedTime = "Every 30 minutes"
-    let times = ["Every 5 seconds", "Every 30 minutes", "Every 1 hour", "Every 2 hours"]
+    let times = ["Every 15 seconds", "Every 30 minutes", "Every 1 hour", "Every 2 hours"]
     let message: String = welcomeMessages.randomElement()!
     
     //timer
@@ -56,6 +56,7 @@ struct OnboardPage: View {
                 .foregroundColor(.white)
                 .background(Color("Danger"))
                 .cornerRadius(8)
+                .shadow(radius: 10)
             } else {
                 Button("Set Session"){
                     isSheetVisible = true
@@ -67,6 +68,7 @@ struct OnboardPage: View {
                 .foregroundColor(Color("Primary"))
                 .background(.white)
                 .cornerRadius(8)
+                .shadow(radius: 10)
                 .sheet(isPresented: $isSheetVisible) {
                     ZStack {
                         Color.white.ignoresSafeArea(.all)
@@ -125,6 +127,7 @@ struct OnboardPage: View {
             .foregroundColor(Color("Primary"))
             .background(.white)
             .cornerRadius(8)
+            .shadow(radius: 10)
         }
         .onAppear{
             if UserDefaults.standard.object(forKey: "timer_interval") != nil && UserDefaults.standard.object(forKey: "timer_end_date") == nil{

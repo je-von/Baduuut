@@ -73,10 +73,10 @@ struct MasterView<Content: View>: View {
                                 .scaleEffect(1.7)
                         } else {
                             // todo: kasih placeholder pas lottie nya masih ngeload
-                            Image("dummy")
-                                .offset(y: 20)
-                                .scaleEffect(1.4)
-                                .padding(-50)
+//                            Image("dummy")
+//                                .offset(y: 20)
+//                                .scaleEffect(1.4)
+//                                .padding(-50)
                         }
                         
                     }
@@ -92,7 +92,9 @@ struct MasterView<Content: View>: View {
                 }
                 .padding()
             }
-            .background(Color("Primary"))
+            .background(LinearGradient(colors: [Color("Primary"), Color("LightBlue")],
+                                       startPoint: .bottom,
+                                       endPoint: .center))
         }
         .navigationBarBackButtonHidden(true)
         .onAppear{
@@ -106,7 +108,7 @@ struct MasterView<Content: View>: View {
 struct MasterView_Previews: PreviewProvider {
     static var previews: some View {
         MasterView(title: "Blabla", subtitle: "blabla", isTimerVisible: .constant(true)){
-            Text("asd")
+            Text("")
         }
     }
 }

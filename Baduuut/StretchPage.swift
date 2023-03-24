@@ -31,6 +31,7 @@ struct StretchPage: View {
             .background(Color("Danger"))
             .foregroundColor(.white)
             .cornerRadius(8)
+            .shadow(radius: 10)
             
         }
         .onReceive(globalTimer){ time in

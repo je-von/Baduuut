@@ -41,5 +41,6 @@ struct Movement{
 }
 
 let movements: [Movement] = [
-    Movement(name: "Movement Dummy", duration: 10, lottieFileName: "dummy-2")
+    Movement(name: "Movement Dummy", duration: 10, lottieFileName: "dummy-2"),
+    Movement(name: "asdsfsaf", duration: 20, lottieFileName: "dummy-2")
 ]
