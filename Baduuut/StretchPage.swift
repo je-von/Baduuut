@@ -9,7 +9,7 @@ import SwiftUI
 struct StretchPage: View {
     @Binding var currentPage: Page
 //    var movement: Movement = movements.randomElement()!
-    var movement: Movement = movements[3]
+    var movement: Movement = movements.randomElement()!
     @State private var isFirstTime: Bool = true
     @State private var isTimerVisible: Bool = true
     @State private var timeRemaining = 3
