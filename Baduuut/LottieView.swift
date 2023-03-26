@@ -21,6 +21,7 @@ struct LottieView: UIViewRepresentable {
         animationView.animation = LottieAnimation.named(lottieFile)
         animationView.contentMode = .scaleAspectFit
         animationView.play()
+        animationView.animationSpeed = lottieFile == "hello" ? 1 : 0.15
         animationView.loopMode = .loop
  
         view.addSubview(animationView)

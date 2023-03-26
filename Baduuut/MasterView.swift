@@ -68,15 +68,15 @@ struct MasterView<Content: View>: View {
                         }
                         
                         if(hasAppear){
-                            LottieView(lottieFile: lottieFileName ?? "dummy-2")
-                                .offset(y: 15)
-                                .scaleEffect(1.7)
+                            LottieView(lottieFile: lottieFileName ?? "body-shake")
+                                .offset(y: 20)
+                                .scaleEffect(1.8)
                         } else {
                             // todo: kasih placeholder pas lottie nya masih ngeload
-//                            Image("dummy")
-//                                .offset(y: 20)
-//                                .scaleEffect(1.4)
-//                                .padding(-50)
+                            Image("placeholder")
+                                .offset(x: 15, y: 20)
+                                .scaleEffect(1.3)
+                                .padding(-50)
                         }
                         
                     }

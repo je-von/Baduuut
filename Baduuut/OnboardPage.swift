@@ -22,7 +22,7 @@ struct OnboardPage: View {
     let time:Float = 1.0
 
     var body: some View {
-        MasterView(title: "Oh, hi 😒", subtitle: message){
+        MasterView(title: "Oh, hi 😒", subtitle: message, lottieFileName: "hello"){
             VStack{
                 Text("\(vm.time)")
                     .fontWeight(.bold)

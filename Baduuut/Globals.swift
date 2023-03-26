@@ -41,6 +41,9 @@ struct Movement{
 }
 
 let movements: [Movement] = [
-    Movement(name: "Movement Dummy", duration: 10, lottieFileName: "dummy-2"),
-    Movement(name: "asdsfsaf", duration: 20, lottieFileName: "dummy-2")
+//    Movement(name: "Movement Dummy", duration: 10, lottieFileName: "dummy-2"),
+    Movement(name: "Leg Stretch", duration: 15, lottieFileName: "up-leg"),
+    Movement(name: "Arm Stretch", duration: 15, lottieFileName: "arm-stretch"),
+    Movement(name: "Shake Your Body", duration: 15, lottieFileName: "body-shake"),
+    Movement(name: "Neck Stretch", duration: 15, lottieFileName: "neck-stretch"),
 ]

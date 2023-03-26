@@ -8,8 +8,8 @@
 import SwiftUI
 struct StretchPage: View {
     @Binding var currentPage: Page
-    var movement: Movement = movements.randomElement()!
-    
+//    var movement: Movement = movements.randomElement()!
+    var movement: Movement = movements[3]
     @State private var isFirstTime: Bool = true
     @State private var isTimerVisible: Bool = true
     @State private var timeRemaining = 3
@@ -19,7 +19,8 @@ struct StretchPage: View {
             title: isFirstTime ? "Let's stretch!" : movement.name,
             subtitle: isFirstTime ? "- or not. I don't really care." : "",
             isTimerVisible: $isTimerVisible,
-            timeRemaining: $timeRemaining
+            timeRemaining: $timeRemaining,
+            lottieFileName: movement.lottieFileName
         ){
             Button("Skip"){
                 currentPage = .onboard
